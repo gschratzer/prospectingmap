@@ -13,7 +13,7 @@ ProspectingMapMainLayerMap                      = Auswahl der Vorlage für die H
 ProspectingMapCoordinatesMetrics		        = Koordinaten System (2D oder 3D Projektion)
 ProspectingMapSearchCoordinatesSettings         = Konfiguration des Koordinatenabrufs der Anschrift 
 ProspectingMapSearchCoordinatesUrlAddress       = URL-Adresse zum Abruf der Koordinaten
-ProspectingMapSearchCoordinatesUrlParameters    = Einstellungen für die Suche (la balise __ADDRESS__ sera remplacée par l'adresse du tiers)
+ProspectingMapSearchCoordinatesUrlParameters    = Einstellungen für die Suche (das Flag __ADDRESS__ wird durch die Adresse der Partneradresse ersetzt)
 ProspectingMapSearchCoordinatesRequestMode      = Modus zum Senden von Sucheinstellungen
 
 #######################################################################
