@@ -326,7 +326,8 @@ HTML;
                       var department = input_state_id.length > 0 ? $('#state_id option:selected').text() : '';
                       department = department.replace(/^\w+ \- /g, '').trim();
                       full_address = full_address + (full_address.length > 0 && (country.length > 0 || department.length > 0) ? ', ' : '') + country + (country.length > 0 && department.length > 0 ? ' - ' : '') + department;
-
+                      full_addressalternative = full_address + (full_address.length > 0 && (country.length > 0 || department.length > 0) ? ', ' : '') + country + (country.length > 0 && department.length > 0 ? ' - ' : '') + department;
+                      
                       var url = '$url'; 
                       var datas = $datas;
                       
@@ -346,7 +347,7 @@ HTML;
                           console.log('ProspectingMap: Address not found: ' + full_address);
                           set_map_location([0, 0]);
 
-                          var error_msg = "$errorLabelGetPositionNotFound : " + full_address;
+                          var error_msg = "$errorLabelGetPositionNotFound : " + full_address + " |d: " + department;
                           if ($useJqueryBlockUi) {
                             $.dolEventValid("",error_msg);
                           } else {
