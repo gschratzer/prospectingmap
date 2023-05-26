@@ -1,45 +1,45 @@
 # Dolibarr language file - en_US - prospectingmap
 CHARSET=UTF-8
 Module163021Name = Prospecting Map
-Module163021Desc = Module pour l'affichage sur une carte des tiers. (avec filtrage par statut de prospection)
+Module163021Desc = Module for displaying third parties on a map. (with filtering by prospect status)
 
 #######################################################################
 # Configuration admin
 #######################################################################
 ProspectingMapSetup                             = Configuration of the module "Prospecting Map"
 
-ProspectingMapSettings                          = Configuration de la carte
-ProspectingMapShowMapIntoCompanyCard            = Voir la carte avec l'emplacement du tiers sur sa fiche (si il est définie)
-ProspectingMapMainLayerMap                      = Choix du Modèle de la carte de fond
+ProspectingMapSettings                          = Configuration of the map
+ProspectingMapShowMapIntoCompanyCard            = See the map with the location of the third party on its card (if it is defined)
+ProspectingMapMainLayerMap                      = Selection of the Map Background Model
 
-ProspectingMapSearchCoordinatesSettings         = Configuration de la récupération des coordonnées depuis l'adresse du tiers
-ProspectingMapSearchCoordinatesUrlAddress       = Adresse URL vers le site de récupération des coordonnées
-ProspectingMapSearchCoordinatesUrlParameters    = Paramètres de recherche (la balise __ADDRESS__ sera remplacée par l'adresse du tiers)
-ProspectingMapSearchCoordinatesRequestMode      = Mode d'envoi des paramètres de recherche
+ProspectingMapSearchCoordinatesSettings         = Configuration of coordinates retrieval from the third party address
+ProspectingMapSearchCoordinatesUrlAddress       = URL to the contact information retrieval site
+ProspectingMapSearchCoordinatesUrlParameters    = Settings for the searching  (the __ADDRESS__ tag will be replaced by the address of the third party)
+ProspectingMapSearchCoordinatesRequestMode      = Mode for transmitting search settings
 
 #######################################################################
 # General
 #######################################################################
-ProspectingMapMapOfProspects    = Carte de prospection
-ProspectingMapLocation          = Localisation
-ProspectingMapEditLocation      = Edition manuelle de la localisation
-ProspectingMapEndEditLocation   = Terminer l'édition manuelle de la localisation
-ProspectingMapGetLocation       = Récupérer la localisation
-ProspectingMapRegion            = Région
+ProspectingMapMapOfProspects    = Map view
+ProspectingMapLocation          = Location
+ProspectingMapEditLocation      = Manual editing of the location
+ProspectingMapEndEditLocation   = End manual editing of the location
+ProspectingMapGetLocation       = Get location
+ProspectingMapRegion            = Region
 ProspectingMapLongitude         = Longitude
 ProspectingMapLatitude          = Latitude
 
 #######################################################################
 # Dictionaries
 #######################################################################
-ProspectingMapRegionDictionaryLabel         = Liste des régions personnalisées
+ProspectingMapRegionDictionaryLabel         = List of customized regions
 ProspectingMapRegionDictionaryDepartment    = Départements
-ProspectingMapSTCommDictionaryColorHelp     = La couleur doit être au format HTML (Ex: #FF0000)
+ProspectingMapSTCommDictionaryColorHelp     = The color must be in HTML format (Ex: #FF0000)
 
 #######################################################################
 # Errors
 #######################################################################
-ProspectingMapErrorAdvanceDictionariesNotFound  = Le module Advanced Dictionaries est introuvable.
-ProspectingMapErrorGetPosition                  = Une erreur c'est produite lors de la récupération de la position
-ProspectingMapErrorGetPositionNotFound          = L'adresse suivante n'a pas été trouvée
-ProspectingMapErrorMapFeatureEncoding           = Erreur lors de l'encodage des points à afficher (voir la console pour plus de détail)
+ProspectingMapErrorAdvanceDictionariesNotFound  = The module Advanced Dictionaries cannot be found.
+ProspectingMapErrorGetPosition                  = An error occurred while retrieving the position
+ProspectingMapErrorGetPositionNotFound          = The following address was not found
+ProspectingMapErrorMapFeatureEncoding           = Error when encoding the points to be displayed (see the console for more details)

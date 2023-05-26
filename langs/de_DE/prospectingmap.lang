@@ -1,0 +1,44 @@
+# Dolibarr language file - de_DE - prospectingmap
+CHARSET=UTF-8
+Module163021Name = Prospecting Map
+Module163021Desc = Modul für die Anzeige von Geschäftsadressen auf einer Karte. (mit Filterung nach Akquisitionsstatus)
+#######################################################################
+# Configuration admin
+#######################################################################
+ProspectingMapSetup                             = Konfiguration des Moduls "Prospecting Map"
+
+ProspectingMapSettings                          = Konfiguration der Karte
+ProspectingMapShowMapIntoCompanyCard            = Karte mit dem Standort der Geschäftspartner-Adresse auf seiner Karteikarte anzeigen (wenn koordinaten verfügbar sind)
+ProspectingMapMainLayerMap                      = Auswahl der Vorlage für die Hintergrundkarte
+ProspectingMapCoordinatesMetrics		        = Koordinaten System (2D oder 3D Projektion)
+ProspectingMapSearchCoordinatesSettings         = Konfiguration des Koordinatenabrufs der Anschrift 
+ProspectingMapSearchCoordinatesUrlAddress       = URL-Adresse zum Abruf der Koordinaten
+ProspectingMapSearchCoordinatesUrlParameters    = Einstellungen für die Suche (das Flag __ADDRESS__ wird durch die Adresse der Partneradresse ersetzt)
+ProspectingMapSearchCoordinatesRequestMode      = Modus zum Senden von Sucheinstellungen
+
+#######################################################################
+# General
+#######################################################################
+ProspectingMapMapOfProspects    = Kartenansicht
+ProspectingMapLocation          = Standort
+ProspectingMapEditLocation      = Manuelles Editieren des Standort
+ProspectingMapEndEditLocation   = Manuelles Editieren des Standorts beenden
+ProspectingMapGetLocation       = Standort abrufen
+ProspectingMapRegion            = Region
+ProspectingMapLongitude         = Longitude
+ProspectingMapLatitude          = Latitude
+
+#######################################################################
+# Dictionaries
+#######################################################################
+ProspectingMapRegionDictionaryLabel         = Liste personalisierter Regionen
+ProspectingMapRegionDictionaryDepartment    = Bezirke
+ProspectingMapSTCommDictionaryColorHelp     = Die Farbe muss im HTML-Format vorliegen (Bsp: #FF0000)
+
+#######################################################################
+# Errors
+#######################################################################
+ProspectingMapErrorAdvanceDictionariesNotFound  = Das Modul Advanced Dictionaries wurde nicht gefunden.
+ProspectingMapErrorGetPosition                  = Beim Abrufen der Daten ist ein Fehler aufgetreten.
+ProspectingMapErrorGetPositionNotFound          = Folgende Adresse wurde nicht gefunden
+ProspectingMapErrorMapFeatureEncoding           = Fehler bei der Kodierung der anzuzeigenden Datenpunkte (siehe Konsole für weitere Details)

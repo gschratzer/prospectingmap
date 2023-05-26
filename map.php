@@ -8,6 +8,8 @@
  * Copyright (C) 2016       Josep Lluis Amador      <joseplluis@lliuretic.cat>
  * Copyright (C) 2016       Ferran Marcet      		<fmarcet@2byte.es>
  * Copyright (C) 2017       Juanjo Menent      		<jmenent@2byte.es>
+ * Copyright (C) 2023       Guido Schratzer         <guido@schratzer.at>
+
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,6 +56,8 @@ $search_sale    = GETPOST("search_sale",'array');
 $search_stcomm  = GETPOST('search_stcomm','array');
 $search_type    = GETPOST('search_type','array');
 $search_state   = GETPOST("search_state",'array');
+$search_categ_cus = GETPOST("search_categ_cus", 'int');
+$search_categ_sup = GETPOST("search_categ_sup", 'int');
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
 $hookmanager->initHooks(array('prospectmap'));
@@ -80,6 +84,8 @@ if (empty($reshook)) {
         $search_stcomm = array();
         $search_type = array();
         $search_state = array();
+        $search_categ_cus = 0;
+        $search_categ_sup = 0;
     }
 }
 
@@ -165,6 +171,69 @@ if (!empty($search_stcomm)) $sql .= " AND s.fk_stcomm IN (" . implode(',', $sear
 $parameters=array();
 $reshook=$hookmanager->executeHooks('printFieldListWhere',$parameters);    // Note that $action and $object may have been modified by hook
 $sql.=$hookmanager->resPrint;
+
+//categoriessearch
+$searchCategoryCustomerList = $search_categ_cus ? array($search_categ_cus) : array();;
+$searchCategoryCustomerOperator = 0;
+// Search for tag/category ($searchCategoryCustomerList is an array of ID)
+if (!empty($searchCategoryCustomerList)) {
+    $searchCategoryCustomerSqlList = array();
+    $listofcategoryid = '';
+    foreach ($searchCategoryCustomerList as $searchCategoryCustomer) {
+        if (intval($searchCategoryCustomer) == -2) {
+            $searchCategoryCustomerSqlList[] = "NOT EXISTS (SELECT ck.fk_soc FROM ".MAIN_DB_PREFIX."categorie_societe as ck WHERE s.rowid = ck.fk_soc)";
+        } elseif (intval($searchCategoryCustomer) > 0) {
+            if ($searchCategoryCustomerOperator == 0) {
+                $searchCategoryCustomerSqlList[] = " EXISTS (SELECT ck.fk_soc FROM ".MAIN_DB_PREFIX."categorie_societe as ck WHERE s.rowid = ck.fk_soc AND ck.fk_categorie = ".((int) $searchCategoryCustomer).")";
+            } else {
+                $listofcategoryid .= ($listofcategoryid ? ', ' : '') .((int) $searchCategoryCustomer);
+            }
+        }
+    }
+    if ($listofcategoryid) {
+        $searchCategoryCustomerSqlList[] = " EXISTS (SELECT ck.fk_soc FROM ".MAIN_DB_PREFIX."categorie_societe as ck WHERE s.rowid = ck.fk_soc AND ck.fk_categorie IN (".$db->sanitize($listofcategoryid)."))";
+    }
+    if ($searchCategoryCustomerOperator == 1) {
+        if (!empty($searchCategoryCustomerSqlList)) {
+            $sql .= " AND (".implode(' OR ', $searchCategoryCustomerSqlList).")";
+        }
+    } else {
+        if (!empty($searchCategoryCustomerSqlList)) {
+            $sql .= " AND (".implode(' AND ', $searchCategoryCustomerSqlList).")";
+        }
+    }
+}
+$searchCategorySupplierList = $search_categ_sup ? array($search_categ_sup) : array();
+$searchCategorySupplierOperator = 0;
+// Search for tag/category ($searchCategorySupplierList is an array of ID)
+if (!empty($searchCategorySupplierList)) {
+    $searchCategorySupplierSqlList = array();
+    $listofcategoryid = '';
+    foreach ($searchCategorySupplierList as $searchCategorySupplier) {
+        if (intval($searchCategorySupplier) == -2) {
+            $searchCategorySupplierSqlList[] = "NOT EXISTS (SELECT ck.fk_soc FROM ".MAIN_DB_PREFIX."categorie_fournisseur as ck WHERE s.rowid = ck.fk_soc)";
+        } elseif (intval($searchCategorySupplier) > 0) {
+            if ($searchCategorySupplierOperator == 0) {
+                $searchCategorySupplierSqlList[] = " EXISTS (SELECT ck.fk_soc FROM ".MAIN_DB_PREFIX."categorie_fournisseur as ck WHERE s.rowid = ck.fk_soc AND ck.fk_categorie = ".((int) $searchCategorySupplier).")";
+            } else {
+                $listofcategoryid .= ($listofcategoryid ? ', ' : '') .((int) $searchCategorySupplier);
+            }
+        }
+    }
+    if ($listofcategoryid) {
+        $searchCategorySupplierSqlList[] = " EXISTS (SELECT ck.fk_soc FROM ".MAIN_DB_PREFIX."categorie_fournisseur as ck WHERE s.rowid = ck.fk_soc AND ck.fk_categorie IN (".$db->sanitize($listofcategoryid)."))";
+    }
+    if ($searchCategorySupplierOperator == 1) {
+        if (!empty($searchCategorySupplierSqlList)) {
+            $sql .= " AND (".implode(' OR ', $searchCategorySupplierSqlList).")";
+        }
+    } else {
+        if (!empty($searchCategorySupplierSqlList)) {
+            $sql .= " AND (".implode(' AND ', $searchCategorySupplierSqlList).")";
+        }
+    }
+}
+// categories end
 $sql.= ' GROUP BY s.rowid, s.nom, s.name_alias, s.town, s.zip, ';
 $sql.= " st.libelle, s.fk_stcomm, s.fk_prospectlevel, s.prefix_comm, s.client, s.fournisseur, s.canvas, s.status,";
 $sql.= " s.email, s.phone, s.fk_pays,";
@@ -205,10 +274,38 @@ $moreforfilter.=$formother->select_salesrepresentatives('','search_sale',$user, 
 $conf->use_javascript_ajax = $save_conf;
 $moreforfilter.='</div>';
 
+if (empty($type) || $type == 'c' || $type == 'p') {
+    if (isModEnabled('categorie') && $user->hasRight("categorie", "lire")) {
+        require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
+        $moreforfilter .= '<div class="divsearchfield">';
+        $tmptitle = $langs->trans('Categories');
+        $moreforfilter .= img_picto($tmptitle, 'category', 'class="pictofixedwidth"');
+        $moreforfilter .= $formother->select_categories('customer', $search_categ_cus, 'search_categ_cus', 1, $langs->trans('CustomersProspectsCategoriesShort'));
+        $moreforfilter .= '</div>';
+    }
+}
+
+if (empty($type) || $type == 'f') {
+    if (isModEnabled("fournisseur") && isModEnabled('categorie') && $user->hasRight("categorie", "lire")) {
+        require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
+        $moreforfilter .= '<div class="divsearchfield">';
+        $tmptitle = $langs->trans('Categories');
+        $moreforfilter .= img_picto($tmptitle, 'category', 'class="pictofixedwidth"');
+        $moreforfilter .= $formother->select_categories('supplier', $search_categ_sup, 'search_categ_sup', 1, $langs->trans('SuppliersCategoriesShort'));
+        $moreforfilter .= '</div>';
+    }
+}
 // States
 $moreforfilter.='<div class="divsearchfield">';
 $moreforfilter.=$langs->trans('ProspectingMapRegion'). ': ';
 $moreforfilter.=multiselect_javascript_code($search_state, 'search_state');
+
+if ($search_categ_cus > 0) {
+    $param .= '&search_categ_cus='.urlencode($search_categ_cus);
+}
+if ($search_categ_sup > 0) {
+    $param .= '&search_categ_sup='.urlencode($search_categ_sup);
+}
 $save_conf = $conf->use_javascript_ajax;
 $conf->use_javascript_ajax = 0;
 $moreforfilter.=$formdictionary->select_dictionary('prospectingmap', 'prospectingmapregion', '', 'search_state', '', 'rowid', '{{label}}', array(), array('label'=>'ASC'), 0, array(), 0, 0, 'minwidth300 maxwidth300');
